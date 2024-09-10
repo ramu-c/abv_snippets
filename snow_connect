@@ -1,0 +1,50 @@
+Sub ScrapeServiceNowRequestDetails()
+    Dim ie As Object
+    Dim doc As Object
+    Dim requestNumber As String
+    Dim requestStatus As String
+    Dim creationDate As String
+    Dim closedDate As String
+    Dim assignedTo As String
+    
+    ' Create Internet Explorer Object
+    Set ie = CreateObject("InternetExplorer.Application")
+    
+    ' Set the URL of the ServiceNow page
+    ie.Visible = True ' Make IE visible
+    ie.navigate "https://your-instance.service-now.com/your-url" ' Replace with actual URL of your ServiceNow instance
+    
+    ' Wait for IE to finish loading
+    Do While ie.Busy Or ie.readyState <> 4
+        DoEvents
+    Loop
+    
+    ' Get the document object
+    Set doc = ie.document
+    
+    ' Scrape data from specific elements in the page (adjust the IDs/Classes based on the page structure)
+    ' For example, get request number, status, creation date, closed date, and assigned to
+    
+    requestNumber = doc.getElementById("element_id_for_request_number").innerText
+    requestStatus = doc.getElementById("element_id_for_status").innerText
+    creationDate = doc.getElementById("element_id_for_creation_date").innerText
+    closedDate = doc.getElementById("element_id_for_closed_date").innerText
+    assignedTo = doc.getElementById("element_id_for_assigned_to").innerText
+    
+    ' Output scraped data to Excel
+    ThisWorkbook.Sheets("Sheet1").Cells(1, 1).Value = "Request Number"
+    ThisWorkbook.Sheets("Sheet1").Cells(1, 2).Value = "Status"
+    ThisWorkbook.Sheets("Sheet1").Cells(1, 3).Value = "Creation Date"
+    ThisWorkbook.Sheets("Sheet1").Cells(1, 4).Value = "Closed Date"
+    ThisWorkbook.Sheets("Sheet1").Cells(1, 5).Value = "Assigned To"
+    
+    ThisWorkbook.Sheets("Sheet1").Cells(2, 1).Value = requestNumber
+    ThisWorkbook.Sheets("Sheet1").Cells(2, 2).Value = requestStatus
+    ThisWorkbook.Sheets("Sheet1").Cells(2, 3).Value = creationDate
+    ThisWorkbook.Sheets("Sheet1").Cells(2, 4).Value = closedDate
+    ThisWorkbook.Sheets("Sheet1").Cells(2, 5).Value = assignedTo
+    
+    ' Close Internet Explorer
+    ie.Quit
+    Set ie = Nothing
+End Sub
